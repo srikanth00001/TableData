@@ -289,11 +289,7 @@ const DataTable = () => {
                   {headers.map((header) => (
                     <th
                       key={header}
-                      className={`${styles.th} ${
-                        header !== "User" && header !== "Position"
-                          ? "hidden md:table-cell"
-                          : ""
-                      }`}
+                      className={`${styles.th}`}
                     >
                       {header}
                       <FaSort className={styles.sortIcon} />
@@ -318,9 +314,9 @@ const DataTable = () => {
                       </div>
                     </td>
                     <td className={styles.td}>{row.position}</td>
-                    <td className={`${styles.td} hidden md:table-cell`}>{row.salary}</td>
-                    <td className={`${styles.td} hidden md:table-cell`}>{row.office}</td>
-                    <td className={`${styles.td} hidden md:table-cell`}>
+                    <td className={`${styles.td}`}>{row.salary}</td>
+                    <td className={`${styles.td} `}>{row.office}</td>
+                    <td className={`${styles.td}`}>
                       <span
                         className={
                           row.status === "Hired"
@@ -333,7 +329,7 @@ const DataTable = () => {
                         {row.status}
                       </span>
                     </td>
-                    <td className={`${styles.td} hidden md:table-cell`}>
+                    <td className={`${styles.td} `}>
                       <div className={styles.actionButtons}>
                         <button
                           className={styles.deleteButton}
