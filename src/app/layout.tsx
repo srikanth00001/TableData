@@ -1,10 +1,11 @@
+// src/app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import Navbar from "@/components/Navbar";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import ClientLayout from "@/components/ClientLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,6 +16,8 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+const outfit = Outfit({ subsets: ["latin"], weight: ["400", "700"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,21 +31,29 @@ export default async function RootLayout({
 }>) {
   const messages = await getMessages();
   const locale = await getLocale();
+
+  const dummyData = [
+    { Name: "Alice", Role: "Admin", Email: "alice@example.com" },
+    { Name: "Bob", Role: "User", Email: "bob@example.com" },
+    { Name: "Charlie", Role: "Moderator", Email: "charlie@example.com" },
+  ];
+
   return (
     <html lang={locale}>
-<body>
-  <NextIntlClientProvider messages={messages}>
+      <body
+        className={`${outfit.className} bg-white text-black dark:bg-black dark:text-white`}
+      >
+        <NextIntlClientProvider messages={messages}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >
-          <Navbar />
-            {children}
+            <ClientLayout dummyData={dummyData}>{children}</ClientLayout>
           </ThemeProvider>
-          </NextIntlClientProvider>
-        </body>
+        </NextIntlClientProvider>
+      </body>
     </html>
   );
 }
