@@ -1,55 +1,6 @@
 import React, { useState } from "react";
 import { FaSearch, FaSort, FaDownload, FaTrash, FaPencilAlt } from "react-icons/fa";
 
-// Define styles based on the TableView template
-const styles = {
-  container: "p-4 bg-white shadow-sm",
-  titleSection: "mb-4",
-  titleFlex: "flex justify-between",
-  title: "text-lg font-semibold text-gray-700",
-  breadcrumb: "text-sm text-gray-500",
-  breadcrumbLink: "text-black ml-2",
-  tableContainer: "border border-gray-200 rounded-lg shadow-sm p-4",
-  datatableTitle: "mb-7",
-  controlsSection: "border border-gray-200 rounded-lg shadow-sm p-4",
-  controlsFlex: "flex flex-col md:flex-row justify-between mb-4 items-start md:items-center",
-  entriesFlex: "flex items-center mb-2 md:mb-0",
-  entriesLabel: "text-sm text-gray-600 mr-2",
-  entriesSelect: "border border-gray-300 rounded px-2 py-1 text-sm",
-  entriesLabelAfter: "text-sm text-gray-600 ml-2",
-  searchContainer: "relative md:w-64 w-full",
-  searchIcon: "absolute inset-y-0 left-0 flex items-center pl-3",
-  searchIconInner: "h-4 w-4 text-gray-400",
-  searchInput: "border border-gray-300 rounded px-4 py-2 pl-10 text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500",
-  downloadButton: "border border-gray-300 rounded flex items-center text-sm p-2 w-full md:w-auto justify-center md:justify-start text-black-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:mt-0 mt-2 sm:ml-2 sm:px-6",
-  downloadIcon: "ml-1",
-  hr: "border-t border-gray-200 my-4",
-  tableWrapper: "overflow-x-auto",
-  table: "min-w-full table-auto border-collapse",
-  theadRow: "",
-  th: "px-4 py-2 text-left text-sm font-medium text-gray-700",
-  sortIcon: "text-gray-400 inline ml-1",
-  tbodyRow: "border-t border-gray-200",
-  td: "px-4 py-2 text-sm text-gray-700",
-  userFlex: "flex flex-col",
-  userName: "text-black font-medium",
-  userEmail: "text-gray-500 text-xs",
-  statusHired: "inline-block px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800",
-  statusInProgress: "inline-block px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800",
-  statusPending: "inline-block px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800",
-  actionButtons: "flex space-x-2",
-  deleteButton: "text-gray-500 hover:text-red-600",
-  editButton: "text-gray-500 hover:text-blue-600",
-  modal: "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50",
-  modalContent: "bg-white p-6 rounded-lg shadow-lg w-full max-w-md",
-  modalHeader: "text-lg font-semibold mb-4",
-  modalInput: "border border-gray-300 rounded px-3 py-2 w-full mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500",
-  modalButton: "px-4 py-2 rounded text-white font-medium",
-  modalSaveButton: "bg-blue-600 hover:bg-blue-700 mr-2",
-  modalCancelButton: "bg-gray-600 hover:bg-gray-700",
-};
-
-// Sample Data matching the image
 const initialTableData = [
   {
     user: { name: "Lindsey Curtis", email: "demoemail@gmail.com" },
@@ -93,67 +44,141 @@ const initialTableData = [
     office: "New York",
     status: "Hired",
   },
+  {
+    user: { name: "Zain Geidt", email: "demoemail@gmail.com" },
+    position: "Junior Technical Author",
+    salary: "$12,500",
+    office: "Tokyo",
+    status: "In Progress",
+  },
+  {
+    user: { name: "Abram Schleifer", email: "demoemail@gmail.com" },
+    position: "Software Engineer",
+    salary: "$89,500",
+    office: "Edinburgh",
+    status: "Hired",
+  },
+  {
+    user: { name: "Carla George", email: "demoemail@gmail.com" },
+    position: "Integration Specialist",
+    salary: "$15,500",
+    office: "London",
+    status: "Pending",
+  },
+  {
+    user: { name: "Emery Culhane", email: "demoemail@gmail.com" },
+    position: "Pre-Sales Support",
+    salary: "$23,500",
+    office: "New York",
+    status: "Hired",
+  },
+  {
+    user: { name: "Zain Geidt", email: "demoemail@gmail.com" },
+    position: "Junior Technical Author",
+    salary: "$12,500",
+    office: "Tokyo",
+    status: "In Progress",
+  },
+  {
+    user: { name: "Abram Schleifer", email: "demoemail@gmail.com" },
+    position: "Software Engineer",
+    salary: "$89,500",
+    office: "Edinburgh",
+    status: "Hired",
+  },
+  {
+    user: { name: "Carla George", email: "demoemail@gmail.com" },
+    position: "Integration Specialist",
+    salary: "$15,500",
+    office: "London",
+    status: "Pending",
+  },
+  {
+    user: { name: "Emery Culhane", email: "demoemail@gmail.com" },
+    position: "Pre-Sales Support",
+    salary: "$23,500",
+    office: "New York",
+    status: "Hired",
+  }
 ];
 
-// DataTable Component
 const DataTable = () => {
   const headers = ["User", "Position", "Salary", "Office", "Status", "Action"];
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const [tableData, setTableData] = useState(initialTableData);
-  const [editRowIndex, setEditRowIndex] = useState(null);
-  const [editForm, setEditForm] = useState(null);
+  const [editRowIndex, setEditRowIndex] = useState<number | null>(null);
+  const [editForm, setEditForm] = useState<any | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [entriesPerPage, setEntriesPerPage] = useState(5);
 
-  // Filter data based on search query
   const filteredData = tableData.filter((row) =>
     [
       row.user.name,
       row.position,
       row.office,
-      row.status
+      row.status,
     ].some((field) =>
       field.toLowerCase().includes(searchQuery.toLowerCase())
     )
   );
 
-  // Handle header checkbox toggle
+  const totalEntries = filteredData.length;
+  const totalPages = Math.ceil(totalEntries / entriesPerPage);
+  const startIndex = (currentPage - 1) * entriesPerPage;
+  const endIndex = Math.min(startIndex + entriesPerPage, totalEntries);
+  const paginatedData = filteredData.slice(startIndex, endIndex);
+
+  const handleEntriesPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newEntriesPerPage = parseInt(e.target.value);
+    setEntriesPerPage(newEntriesPerPage);
+    setCurrentPage(1);
+    setSelectedRows([]);
+    setSelectAll(false);
+  };
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      setSelectedRows([]);
+      setSelectAll(false);
+    }
+  };
+
   const handleSelectAll = () => {
     if (selectAll) {
       setSelectedRows([]);
     } else {
-      setSelectedRows(filteredData.map((_, index) => index));
+      setSelectedRows(paginatedData.map((_, index) => index));
     }
     setSelectAll(!selectAll);
   };
 
-  // Handle individual row checkbox toggle
-  const handleRowSelect = (index) => {
+  const handleRowSelect = (index: number) => {
     if (selectedRows.includes(index)) {
       setSelectedRows(selectedRows.filter((i) => i !== index));
     } else {
       setSelectedRows([...selectedRows, index]);
     }
-    setSelectAll(filteredData.length === selectedRows.length + 1);
+    setSelectAll(paginatedData.length === selectedRows.length + 1);
   };
 
-  // Handle download button click
   const handleDownload = () => {
-    if (selectedRows.length === 0) {
-      alert("Please select at least one row to download.");
+    if (filteredData.length === 0) {
+      alert("No data available to download.");
       return;
     }
 
     const csvHeaders = ["Name", "Email", "Position", "Salary", "Office", "Status"];
-    const csvRows = selectedRows.map((index) => {
-      const row = filteredData[index];
+    const csvRows = filteredData.map((row) => {
       return [
         `"${row.user.name}"`,
         `"${row.user.email}"`,
         `"${row.position}"`,
         `"${row.salary}"`,
         `"${row.office}"`,
-        `"${row.status}"`
+        `"${row.status}"`,
       ].join(",");
     });
 
@@ -162,27 +187,34 @@ const DataTable = () => {
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
-    link.setAttribute("download", "selected_data.csv");
-    link.style.visibility = "hidden";
+    link.setAttribute("download", "filtered_data.csv");
+    link.style.visibility = "hidden"
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
-  // Handle delete button click
-  const handleDelete = (index) => {
+  const handleDelete = (index: number) => {
     if (window.confirm("Are you sure you want to delete this row?")) {
-      const actualIndex = tableData.indexOf(filteredData[index]);
+      const actualIndex = tableData.indexOf(paginatedData[index]);
       const newData = tableData.filter((_, i) => i !== actualIndex);
       setTableData(newData);
-      setSelectedRows(selectedRows.filter((i) => i !== index).map((i) => i > index ? i - 1 : i));
+      setSelectedRows(
+        selectedRows
+          .filter((i) => i !== index)
+          .map((i) => (i > index ? i - 1 : i))
+      );
       setSelectAll(false);
+
+      const newTotalPages = Math.ceil(newData.length / entriesPerPage);
+      if (currentPage > newTotalPages && newTotalPages > 0) {
+        setCurrentPage(newTotalPages);
+      }
     }
   };
 
-  // Handle edit button click
-  const handleEdit = (index) => {
-    const row = filteredData[index];
+  const handleEdit = (index: number) => {
+    const row = paginatedData[index];
     setEditRowIndex(index);
     setEditForm({
       name: row.user.name,
@@ -194,15 +226,13 @@ const DataTable = () => {
     });
   };
 
-  // Handle edit form change
-  const handleEditFormChange = (e) => {
+  const handleEditFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setEditForm((prev) => ({ ...prev, [name]: value }));
+    setEditForm((prev: any) => ({ ...prev, [name]: value }));
   };
 
-  // Handle edit form submit
   const handleEditSubmit = () => {
-    const actualIndex = tableData.indexOf(filteredData[editRowIndex]);
+    const actualIndex = tableData.indexOf(paginatedData[editRowIndex!]);
     const newData = [...tableData];
     newData[actualIndex] = {
       user: { name: editForm.name, email: editForm.email },
@@ -216,72 +246,77 @@ const DataTable = () => {
     setEditForm(null);
   };
 
-  // Handle edit modal close
   const handleEditClose = () => {
     setEditRowIndex(null);
     setEditForm(null);
   };
 
   return (
-    <div className={styles.container}>
+    <div className="bg-card text-card-foreground shadow-sm">
       {/* Title and Breadcrumb */}
-      <div className={styles.titleSection}>
-        <div className={styles.titleFlex}>
-          <h2 className={styles.title}>Data Tables</h2>
-          <p className={styles.breadcrumb}>
-            Home ><span className={styles.breadcrumbLink}>Data Tables</span>
+      <div className="mb-4">
+        <div className="flex justify-between">
+          <h2 className="text-lg font-semibold text-foreground">Data Tables</h2>
+          <p className="text-sm text-muted-foreground">
+            Home &gt; <span className="text-foreground ml-2">Data Tables</span>
           </p>
         </div>
       </div>
 
-      <div className={styles.tableContainer}>
+      <div className="border border-border rounded-lg shadow-sm p-4">
         {/* Datatable Title */}
-        <div className={styles.datatableTitle}>
-          <h4>Datatable 3</h4>
+        <div className="mb-7">
+          <h4 className="text-foreground">Datatable 3</h4>
         </div>
 
         {/* Controls Section */}
-        <div className={styles.controlsSection}>
-          <div className={styles.controlsFlex}>
-            <div className={styles.entriesFlex}>
-              <span className={styles.entriesLabel}>Show</span>
-              <select className={styles.entriesSelect} defaultValue="10">
-                <option>10</option>
-                <option>8</option>
-                <option>5</option>
+        <div className="border border-border rounded-lg shadow-sm p-4">
+          <div className="flex flex-col md:flex-row justify-between mb-4 items-start md:items-center">
+            <div className="flex items-center mb-2 md:mb-0">
+              <span className="text-sm text-muted-foreground mr-2">Show</span>
+              <select
+                className="border border-input rounded px-2 py-1 text-sm bg-background text-foreground"
+                value={entriesPerPage}
+                onChange={handleEntriesPerPageChange}
+              >
+                <option value="5">5</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
               </select>
-              <span className={styles.entriesLabelAfter}>entries</span>
+              <span className="text-sm text-muted-foreground ml-2">entries</span>
             </div>
             <div className="flex flex-col sm:flex-row w-full md:w-auto">
-            <div className={styles.searchContainer}>
-                <span className={styles.searchIcon}>
-                  <FaSearch className={styles.searchIconInner} />
+              <div className="relative md:w-64 w-full">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <FaSearch className="h-4 w-4 text-muted-foreground" />
                 </span>
                 <input
                   type="text"
                   placeholder="Search..."
-                  className={styles.searchInput}
+                  className="border border-input rounded px-4 py-2 pl-10 text-sm w-full bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <button className={styles.downloadButton} onClick={handleDownload}>
+              <button
+                className="border border-input rounded flex items-center text-sm p-2 w-full md:w-auto justify-center md:justify-start text-foreground hover:text-primary focus:outline-none focus:ring-2 focus:ring-ring sm:mt-0 mt-2 sm:ml-2 sm:px-6"
+                onClick={handleDownload}
+              >
                 Download
-                <FaDownload className={styles.downloadIcon} />
+                <FaDownload className="ml-1" />
               </button>
             </div>
           </div>
-          <hr className={styles.hr} />
+          <hr className="border-t border-border my-4" />
 
           {/* Table */}
-          <div className={styles.tableWrapper}>
-            <table className={styles.table}>
+          <div className="overflow-x-auto">
+            <table className="min-w-full table-auto border-collapse">
               <thead>
-                <tr className={styles.theadRow}>
-                  <th className={styles.th}>
+                <tr>
+                  <th className="px-2 md:px-1 py-2 text-left text-sm font-medium text-foreground">
                     <input
                       type="checkbox"
-                      className="mr-2"
                       checked={selectAll}
                       onChange={handleSelectAll}
                     />
@@ -289,57 +324,56 @@ const DataTable = () => {
                   {headers.map((header) => (
                     <th
                       key={header}
-                      className={`${styles.th}`}
+                      className="px-7 md:px-1 py-2 text-left text-sm font-medium text-foreground"
                     >
                       {header}
-                      <FaSort className={styles.sortIcon} />
+                      <FaSort className="text-muted-foreground inline ml-1" />
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {filteredData.map((row, index) => (
-                  <tr key={index} className={styles.tbodyRow}>
-                    <td className={styles.td}>
+                {paginatedData.map((row, index) => (
+                  <tr key={index} className="border-t border-border">
+                    <td className="px-2 md:px-1 py-2 text-sm text-foreground">
                       <input
                         type="checkbox"
                         checked={selectedRows.includes(index)}
                         onChange={() => handleRowSelect(index)}
                       />
                     </td>
-                    <td className={styles.td}>
-                      <div className={styles.userFlex}>
-                        <span className={styles.userName}>{row.user.name}</span>
-                        <span className={styles.userEmail}>{row.user.email}</span>
+                    <td className="px-7 md:px-1 py-2 text-sm text-foreground">
+                      <div className="flex flex-col">
+                        <span className="text-foreground font-medium">{row.user.name}</span>
+                        <span className="text-muted-foreground text-xs">{row.user.email}</span>
                       </div>
                     </td>
-                    <td className={styles.td}>{row.position}</td>
-                    <td className={`${styles.td}`}>{row.salary}</td>
-                    <td className={`${styles.td} `}>{row.office}</td>
-                    <td className={`${styles.td}`}>
+                    <td className="px-7 md:px-1 py-2 text-sm text-foreground">{row.position}</td>
+                    <td className="px-7 md:px-1 py-2 text-sm text-foreground">{row.salary}</td>
+                    <td className="px-7 md:px-1 py-2 text-sm text-foreground">{row.office}</td>
+                    <td className="px-7 md:px-1 py-2 text-sm text-foreground">
                       <span
-                        className={
-                          row.status === "Hired"
-                            ? styles.statusHired
+                        className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${row.status === "Hired"
+                            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                             : row.status === "In Progress"
-                            ? styles.statusInProgress
-                            : styles.statusPending
-                        }
+                              ? "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200"
+                              : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                          }`}
                       >
                         {row.status}
                       </span>
                     </td>
-                    <td className={`${styles.td} `}>
-                      <div className={styles.actionButtons}>
+                    <td className="px-7 md:px-1 py-2 text-sm text-foreground">
+                      <div className="flex space-x-2">
                         <button
-                          className={styles.deleteButton}
+                          className="text-muted-foreground hover:text-destructive cursor-pointer mr-3"
                           aria-label="Delete"
                           onClick={() => handleDelete(index)}
                         >
                           <FaTrash />
                         </button>
                         <button
-                          className={styles.editButton}
+                          className="text-muted-foreground hover:text-primary cursor-pointer"
                           aria-label="Edit"
                           onClick={() => handleEdit(index)}
                         >
@@ -352,20 +386,73 @@ const DataTable = () => {
               </tbody>
             </table>
           </div>
+          <hr className="border-t border-border my-4" />
+          {/* Pagination Section */}
+          <div className="flex flex-col md:flex-row md:justify-between items-center mt-6 text-sm">
+            <span className="text-muted-foreground mb-2 md:mb-0">
+              Showing {startIndex + 1} to {endIndex} of {totalEntries} entries
+            </span>
+            <div className="flex items-center space-x-2 justify-center">
+              <button
+                className={`border border-input rounded px-3 py-1 ${currentPage === 1 ? "text-muted-foreground cursor-not-allowed" : "text-foreground"
+                  }`}
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+              {totalPages <= 3
+                ? Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    className={`border border-input rounded px-2 py-1 ${currentPage === page ? "bg-primary text-primary-foreground" : "text-foreground"
+                      }`}
+                    onClick={() => handlePageChange(page)}
+                  >
+                    {page}
+                  </button>
+                ))
+                : [
+                  ...Array.from({ length: Math.min(totalPages, 3) }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      className={`border border-input rounded px-3 py-1 ${currentPage === page ? "bg-primary text-primary-foreground" : "text-foreground"
+                        }`}
+                      onClick={() => handlePageChange(page)}
+                    >
+                      {page}
+                    </button>
+                  )),
+                  totalPages > 3 && (
+                    <span key="ellipsis" className="px-2 text-muted-foreground">
+                      ...
+                    </span>
+                  ),
+                ]}
+              <button
+                className={`border border-input rounded px-2 py-1 ${currentPage === totalPages ? "text-muted-foreground cursor-not-allowed" : "text-foreground"
+                  }`}
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Edit Modal */}
       {editForm && (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>
-            <h2 className={styles.modalHeader}>Edit Row</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-card text-card-foreground p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h2 className="text-lg font-semibold text-foreground mb-4">Edit Row</h2>
             <input
               type="text"
               name="name"
               value={editForm.name}
               onChange={handleEditFormChange}
-              className={styles.modalInput}
+              className="border border-input rounded px-3 py-2 w-full mb-3 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Name"
             />
             <input
@@ -373,7 +460,7 @@ const DataTable = () => {
               name="email"
               value={editForm.email}
               onChange={handleEditFormChange}
-              className={styles.modalInput}
+              className="border border-input rounded px-3 py-2 w-full mb-3 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Email"
             />
             <input
@@ -381,7 +468,7 @@ const DataTable = () => {
               name="position"
               value={editForm.position}
               onChange={handleEditFormChange}
-              className={styles.modalInput}
+              className="border border-input rounded px-3 py-2 w-full mb-3 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Position"
             />
             <input
@@ -389,7 +476,7 @@ const DataTable = () => {
               name="salary"
               value={editForm.salary}
               onChange={handleEditFormChange}
-              className={styles.modalInput}
+              className="border border-input rounded px-3 py-2 w-full mb-3 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Salary"
             />
             <input
@@ -397,14 +484,14 @@ const DataTable = () => {
               name="office"
               value={editForm.office}
               onChange={handleEditFormChange}
-              className={styles.modalInput}
+              className="border border-input rounded px-3 py-2 w-full mb-3 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Office"
             />
             <select
               name="status"
               value={editForm.status}
               onChange={handleEditFormChange}
-              className={styles.modalInput}
+              className="border border-input rounded px-3 py-2 w-full mb-3 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="Hired">Hired</option>
               <option value="In Progress">In Progress</option>
@@ -412,13 +499,13 @@ const DataTable = () => {
             </select>
             <div className="flex justify-end mt-4">
               <button
-                className={`${styles.modalButton} ${styles.modalSaveButton}`}
+                className="px-4 py-2 rounded text-white dark:text-black font-medium bg-primary hover:bg-primary/80 mr-2"
                 onClick={handleEditSubmit}
               >
                 Save
               </button>
               <button
-                className={`${styles.modalButton} ${styles.modalCancelButton}`}
+                className="px-4 py-2 rounded dark:text-white text-black  font-medium bg-secondary hover:bg-secondary/80 border border-black dark:border-white"
                 onClick={handleEditClose}
               >
                 Cancel

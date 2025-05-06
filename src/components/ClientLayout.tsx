@@ -1,4 +1,3 @@
-// src/components/ClientLayout.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -23,12 +22,28 @@ const ClientLayout = ({ dummyData, children }: ClientLayoutProps) => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen overflow-hidden">
+      {/* Sidebar */}
       <SideNav isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <div className="w-full">
-        <TopBar toggleSidebar={toggleSidebar} />
-        <TableView data={dummyData} />
-        {children}
+
+      {/* Main content */}
+      <div className="flex flex-col flex-1 overflow-hidden">
+        {/* TopBar */}
+        <div className="fixed top-0 left-0 right-0 z-50">
+          <TopBar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+        </div>
+
+        {/* Content */}
+        <div
+          className={`pt-16 transition-all duration-300 h-full overflow-auto ${
+            isSidebarOpen ? "md:ml-64" : "md:ml-16"
+          }`}
+        >
+          <div className=" max-w-full">
+            <TableView data={dummyData} />
+            {children}
+          </div>
+        </div>
       </div>
     </div>
   );
